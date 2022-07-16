@@ -1,5 +1,6 @@
 import altair as alt
 import pandas as pd
+from sys import argv
 
 def main():
     df = pd.read_csv("plot_data.csv")
@@ -55,15 +56,21 @@ def main():
                 range=[x[1] for x in colors_list],
             ),
             title="Category",
+            legend=alt.Legend(orient="top"),
         ),
         opacity=alt.condition(selection, alt.value(1), alt.value(0.1)),
         tooltip=['description', 'veg_category', 'fdc_id'],
         href="url",
     ).add_selection(
         selection
-    ).properties(
-        width=1080, height=550
     )
+    if argv[1:] == ["standalone"]:
+        chart = chart.properties(
+            width=1080, height=550
+        )
+    else:
+        chart = chart.properties(width="container", height="container")
+
 
     chart['usermeta'] = {
         "embedOptions": {
@@ -71,7 +78,10 @@ def main():
         }
     }
 
-    chart.interactive().save("plot.html")
+    if argv[1:] == ["standalone"]:
+        chart = chart.interactive().save("plot.html")
+    else:
+        chart = chart.interactive().save("plot.json")
 
 
 if __name__ == "__main__":
