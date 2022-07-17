@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <!-- Import vega-embed -->
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style media="screen">
+      body {
+        font-family: sans-serif;
+        text-align: justify;
+      }
+      .main-container {
+        position: absolute;
+        width: 97%;
+        height: 97%;
+        padding: 0 0 0 0;
+        margin: 0 0 0 0;
+      }
+      #main-centerer {
+        max-width: 90vh;
+        height: 95%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #vis-height-limiter {
+        height: 70%;
+        margin-top: 2ex;
+        margin-bottom: 2ex;
+      }
+      .text-centerer {
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: auto auto auto;
+      }
+      .grid-container > div {
+        padding: 20px 0;
+      }
+      .vega-embed {
+        width: 100%;
+        height: 100%;
+      }
+      #vis-fullscreen-helper {
+        width: 100%;
+        height: 100%;
+      }
+      .vis-height-limiter-fullscreen {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 97% !important;
+        width: 97% !important;
+      }
+      .vis-fullscreen-helper-fullscreen {
+        margin-top: 1em;
+        margin-left: auto;
+        margin-right: auto;
+        height: 90% !important;
+        width: 90% !important;
+      }
+      .vis-fullscreen-button-container {
+        display: block;
+      }
+      .vis-fullscreen-button {
+        list-style: none;
+        position: absolute;
+        top: 32px;
+        right: 0;
+        padding: 6px;
+        z-index: 1000;
+        background: white;
+        box-shadow: 1px 1px 3px rgb(0 0 0 / 10%);
+        color: #1b1e23;
+        border: 1px solid #aaa;
+        border-radius: 999px;
+        opacity: 0.2;
+        transition: opacity 0.4s ease-in;
+        cursor: pointer;
+        line-height: 0px;
+      }
+      .vis-fullscreen-button svg {
+        width: 14px;
+        height: 14px;
+      }
+  </style>
+  <script type="text/javascript">
+    function fullscreenKeyUpHandler(event) {
+        if (event.code === "Escape") {
+          disableFullscreen();
+        }
+    }
+    function enableFullscreen() {
+      var elem = document.getElementById("vis-height-limiter");
+      elem.classList.add("vis-height-limiter-fullscreen");
+      var elem = document.getElementById("vis-fullscreen-helper");
+      elem.classList.add("vis-fullscreen-helper-fullscreen");
+      window.dispatchEvent(new Event('resize'));
+      document.addEventListener('keyup', fullscreenKeyUpHandler);
+    }
+    function disableFullscreen() {
+      var elem = document.getElementById("vis-height-limiter");
+      elem.classList.remove("vis-height-limiter-fullscreen");
+      var elem = document.getElementById("vis-fullscreen-helper");
+      elem.classList.remove("vis-fullscreen-helper-fullscreen");
+      window.dispatchEvent(new Event('resize'));
+      document.removeEventListener('keyup', fullscreenKeyUpHandler);
+    }
+    function toggleFullscreen() {
+      var elem = document.getElementById("vis-height-limiter");
+      if (elem.classList.contains("vis-height-limiter-fullscreen")) {
+        disableFullscreen();
+      } else {
+        enableFullscreen();
+      }
+    }
+    window.addEventListener('load', (event) => {
+      setTimeout(() => {
+        /* add fullscreen button to DOM */
+        var vis = document.querySelector("#vis");
+        var fullscreenButtonContainer = document.createElement("div");
+        fullscreenButtonContainer.classList.add(
+          "vis-fullscreen-button-container"
+        );
+        vis.appendChild(fullscreenButtonContainer);
+
+        var fullscreenButton = document.createElement("div");
+        fullscreenButton.classList.add("vis-fullscreen-button");
+        fullscreenButtonContainer.appendChild(fullscreenButton);
+
+        var fullscreenSymbol = document.createElement("svg");
+        fullscreenButton.appendChild(fullscreenSymbol);
+        fullscreenSymbol.outerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="3" width="16" height="11"></rect><rect x="0" y="9" width="6" height="4"></rect></svg>';
+        fullscreenSymbol.classList.add("vis-fullscreen-symbol");
+        /* set up fullscreen button click events */
+        fullscreenButton.addEventListener("click", toggleFullscreen);
+        /* set up same opacity behavior for fullscreen button as for menu */
+        document.getElementById("vis").addEventListener(
+          "mouseover",
+          (event) => {
+            document.querySelector(".vis-fullscreen-button", event.target).style.opacity = 1;
+          }
+        );
+        document.getElementById("vis").addEventListener(
+          "mouseout",
+          (event) => {
+            document.querySelector(".vis-fullscreen-button", event.target).style.removeProperty("opacity");
+          }
+        );
+      }, 2000);
+    });
+  </script>
+</head>
+<body>
+
+<div class="main-container">
+  <div id="main-centerer">
+    <div class="text-centerer">
+      <h1>Food protein chart</h1>
+      Protein contribution to weight and energy for all foods in the
+      <a href="https://fdc.nal.usda.gov/download-datasets.html">
+        USDA FDC
+      </a>
+      FNDDS ("Survey") dataset, categorized into vegan/vegetarian/omni (or
+      combinations if uncertain) using data from
+      <a href="https://github.com/v3gtb/fooddata-vegattributes">
+        fooddata-vegattributes</a>:
+    </div>
+    <div id="vis-height-limiter">
+      <div id="vis-fullscreen-helper">
+        <div id="vis"></div>
+      </div>
+    </div>
+    <div class="text-centerer">
+      <div>
+        Visualization created using
+        <a href="https://altair-viz.github.io/">Altair</a>.
+      </div>
+      <div>
+        <a href="https://github.com/v3gtb/food-protein-chart">Source code</a>
+        on GitHub.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var spec = "plot.json";
+  vegaEmbed('#vis', spec).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+</script>
+</body>
+</html>
