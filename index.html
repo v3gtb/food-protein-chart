@@ -91,72 +91,6 @@
         height: 14px;
       }
   </style>
-  <script type="text/javascript">
-    function fullscreenKeyUpHandler(event) {
-        if (event.code === "Escape") {
-          disableFullscreen();
-        }
-    }
-    function enableFullscreen() {
-      var elem = document.getElementById("vis-height-limiter");
-      elem.classList.add("vis-height-limiter-fullscreen");
-      var elem = document.getElementById("vis-fullscreen-helper");
-      elem.classList.add("vis-fullscreen-helper-fullscreen");
-      window.dispatchEvent(new Event('resize'));
-      document.addEventListener('keyup', fullscreenKeyUpHandler);
-    }
-    function disableFullscreen() {
-      var elem = document.getElementById("vis-height-limiter");
-      elem.classList.remove("vis-height-limiter-fullscreen");
-      var elem = document.getElementById("vis-fullscreen-helper");
-      elem.classList.remove("vis-fullscreen-helper-fullscreen");
-      window.dispatchEvent(new Event('resize'));
-      document.removeEventListener('keyup', fullscreenKeyUpHandler);
-    }
-    function toggleFullscreen() {
-      var elem = document.getElementById("vis-height-limiter");
-      if (elem.classList.contains("vis-height-limiter-fullscreen")) {
-        disableFullscreen();
-      } else {
-        enableFullscreen();
-      }
-    }
-    window.addEventListener('load', (event) => {
-      setTimeout(() => {
-        /* add fullscreen button to DOM */
-        var vis = document.querySelector("#vis");
-        var fullscreenButtonContainer = document.createElement("div");
-        fullscreenButtonContainer.classList.add(
-          "vis-fullscreen-button-container"
-        );
-        vis.appendChild(fullscreenButtonContainer);
-
-        var fullscreenButton = document.createElement("div");
-        fullscreenButton.classList.add("vis-fullscreen-button");
-        fullscreenButtonContainer.appendChild(fullscreenButton);
-
-        var fullscreenSymbol = document.createElement("svg");
-        fullscreenButton.appendChild(fullscreenSymbol);
-        fullscreenSymbol.outerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="3" width="16" height="11"></rect><rect x="0" y="9" width="6" height="4"></rect></svg>';
-        fullscreenSymbol.classList.add("vis-fullscreen-symbol");
-        /* set up fullscreen button click events */
-        fullscreenButton.addEventListener("click", toggleFullscreen);
-        /* set up same opacity behavior for fullscreen button as for menu */
-        document.getElementById("vis").addEventListener(
-          "mouseover",
-          (event) => {
-            document.querySelector(".vis-fullscreen-button", event.target).style.opacity = 1;
-          }
-        );
-        document.getElementById("vis").addEventListener(
-          "mouseout",
-          (event) => {
-            document.querySelector(".vis-fullscreen-button", event.target).style.removeProperty("opacity");
-          }
-        );
-      }, 2000);
-    });
-  </script>
 </head>
 <body>
 
@@ -200,9 +134,74 @@
 </div>
 
 <script type="text/javascript">
+  /* fullscreen-related functions */
+  function enableFullscreen() {
+    var elem = document.getElementById("vis-height-limiter");
+    elem.classList.add("vis-height-limiter-fullscreen");
+    var elem = document.getElementById("vis-fullscreen-helper");
+    elem.classList.add("vis-fullscreen-helper-fullscreen");
+    window.dispatchEvent(new Event('resize'));
+    document.addEventListener('keyup', fullscreenKeyUpHandler);
+  }
+  function disableFullscreen() {
+    var elem = document.getElementById("vis-height-limiter");
+    elem.classList.remove("vis-height-limiter-fullscreen");
+    var elem = document.getElementById("vis-fullscreen-helper");
+    elem.classList.remove("vis-fullscreen-helper-fullscreen");
+    window.dispatchEvent(new Event('resize'));
+    document.removeEventListener('keyup', fullscreenKeyUpHandler);
+  }
+  function toggleFullscreen() {
+    var elem = document.getElementById("vis-height-limiter");
+    if (elem.classList.contains("vis-height-limiter-fullscreen")) {
+      disableFullscreen();
+    } else {
+      enableFullscreen();
+    }
+  }
+  function fullscreenKeyUpHandler(event) {
+      if (event.code === "Escape") {
+        disableFullscreen();
+      }
+  }
+  function setupFullscreenFunctionality() {
+    /* add fullscreen button to DOM */
+    var vis = document.querySelector("#vis");
+    var fullscreenButtonContainer = document.createElement("div");
+    fullscreenButtonContainer.classList.add(
+      "vis-fullscreen-button-container"
+    );
+    vis.appendChild(fullscreenButtonContainer);
+
+    var fullscreenButton = document.createElement("div");
+    fullscreenButton.classList.add("vis-fullscreen-button");
+    fullscreenButtonContainer.appendChild(fullscreenButton);
+
+    var fullscreenSymbol = document.createElement("svg");
+    fullscreenButton.appendChild(fullscreenSymbol);
+    fullscreenSymbol.outerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="3" width="16" height="11"></rect><rect x="0" y="9" width="6" height="4"></rect></svg>';
+    fullscreenSymbol.classList.add("vis-fullscreen-symbol");
+    /* set up fullscreen button click events */
+    fullscreenButton.addEventListener("click", toggleFullscreen);
+    /* set up same opacity behavior for fullscreen button as for menu */
+    document.getElementById("vis").addEventListener(
+      "mouseover",
+      (event) => {
+        document.querySelector(".vis-fullscreen-button", event.target).style.opacity = 1;
+      }
+    );
+    document.getElementById("vis").addEventListener(
+      "mouseout",
+      (event) => {
+        document.querySelector(".vis-fullscreen-button", event.target).style.removeProperty("opacity");
+      }
+    );
+  }
+  /* draw chart */
   var spec = "plot.json";
   vegaEmbed('#vis', spec).then(function(result) {
     // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+    setupFullscreenFunctionality();
   }).catch(console.error);
 </script>
 </body>
