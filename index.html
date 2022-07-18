@@ -200,8 +200,16 @@
     /* from: https://stackoverflow.com/a/10465984 */
     return parseFloat(getComputedStyle(element).fontSize);
   }
+  function getElementFontSizeInPhysicalPx(element) {
+    return (
+      getElementFontSize(element)
+      * (window.devicePixelRatio === undefined ? 1 : window.devicePixelRatio)
+    );
+  }
   /* get font size of text on page */
-  var fontSize = getElementFontSize(document.getElementById('vis'));
+  var fontSize = getElementFontSizeInPhysicalPx(
+    document.getElementById('vis')
+  );
   /* draw chart */
   var spec = "plot.json";
   vegaEmbed(
