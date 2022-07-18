@@ -196,9 +196,30 @@
       }
     );
   }
+  function getElementFontSize(element) {
+    /* from: https://stackoverflow.com/a/10465984 */
+    return parseFloat(getComputedStyle(element).fontSize);
+  }
+  /* get font size of text on page */
+  var fontSize = getElementFontSize(document.getElementById('vis'));
   /* draw chart */
   var spec = "plot.json";
-  vegaEmbed('#vis', spec).then(function(result) {
+  vegaEmbed(
+    '#vis',
+    spec,
+    {
+      config: {
+        axis: {
+          labelFontSize: fontSize,
+          titleFontSize: fontSize,
+        },
+        legend: {
+          labelFontSize: fontSize,
+          titleFontSize: fontSize,
+        }
+      }
+    }
+  ).then(function(result) {
     // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
     setupFullscreenFunctionality();
   }).catch(console.error);
