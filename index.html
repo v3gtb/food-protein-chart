@@ -207,7 +207,7 @@
     );
   }
   /* get font size of text on page */
-  var fontSize = getElementFontSize(document.getElementById('body'));
+  var fontSize = getElementFontSize(document.getElementsByTagName('body')[0]);
   /* draw chart */
   var spec = "plot.json";
   vegaEmbed(
