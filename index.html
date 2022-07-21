@@ -25,21 +25,17 @@
         padding: 0 0 0 0;
         margin: 0 0 0 0;
       }
-      #main-centerer {
-        max-width: calc(1.3*100vh - 0.10*100vw);
-        height: 95%;
-        margin-left: auto;
-        margin-right: auto;
-      }
       #vis-height-limiter {
-        height: 70vh;
-        margin-top: 2ex;
-        margin-bottom: 2ex;
+        width: calc(max(1.35*100vh - 0.10*100vw, 50vw));
+        height: 90vh;
+        float: left;
+        margin: 2ex;
       }
       .text-centerer {
         margin-left: 5%;
         margin-right: 5%;
         padding-bottom: 2ex;
+        display: inline;
       }
       .grid-container {
         display: grid;
@@ -96,45 +92,56 @@
         width: 14px;
         height: 14px;
       }
+      @media screen and (max-width: 1000px) {
+        .main-container {
+          display: flex;
+          flex-direction: column;
+        }
+        #vis-height-limiter {
+          margin: auto;
+          width: 95%;
+        }
+        .intro {
+          order: -1;
+        }
+      }
   </style>
 </head>
 <body>
 
 <div class="main-container">
-  <div id="main-centerer">
-    <div class="text-centerer">
-      <h1>Food protein chart</h1>
-      Protein contribution to weight and energy for all foods in the
-      <a href="https://fdc.nal.usda.gov/download-datasets.html">
-        USDA FDC</a>
-      FNDDS ("Survey") dataset, categorized into vegan/vegetarian/omni (or
-      combinations if uncertain) using data from
-      <a href="https://github.com/v3gtb/fooddata-vegattributes">
-        fooddata-vegattributes</a>:
+  <div id="vis-height-limiter">
+    <div id="vis-fullscreen-helper">
+      <div id="vis"></div>
     </div>
-    <div id="vis-height-limiter">
-      <div id="vis-fullscreen-helper">
-        <div id="vis"></div>
-      </div>
+  </div>
+  <div class="text-centerer intro">
+    <h1>Food protein chart</h1>
+    Protein contribution to weight and energy for all foods in the
+    <a href="https://fdc.nal.usda.gov/download-datasets.html">
+      USDA FDC</a>
+    FNDDS ("Survey") dataset, categorized into vegan/vegetarian/omni (or
+    combinations if uncertain) using data from
+    <a href="https://github.com/v3gtb/fooddata-vegattributes">
+      fooddata-vegattributes</a>.
+  </div>
+  <div class="text-centerer">
+    <div>
+      Visualization created using
+      <a href="https://altair-viz.github.io/">Altair</a>.
     </div>
-    <div class="text-centerer">
-      <div>
-        Visualization created using
-        <a href="https://altair-viz.github.io/">Altair</a>.
-      </div>
-      <div>
-        <a href="https://github.com/v3gtb/food-protein-chart">Source code</a>
-        on GitHub.
-      </div>
-      <h2>Calculation details</h2>
-      <div>
-        To compute the energy contributions of macronutrients, carbohydrates
-        and protein were counted as 4&nbsp;kcal/g, alcohol as 7&nbsp;kcal/g and
-        fat as 9&nbsp;kcal/g. Fiber was ignored. There were small discrepancies
-        between the total energy computed in this way and the total energy
-        given in the FDC data, so as a compromise the average between these two
-        values was used.
-      </div>
+    <div>
+      <a href="https://github.com/v3gtb/food-protein-chart">Source code</a>
+      on GitHub.
+    </div>
+    <h2>Calculation details</h2>
+    <div>
+      To compute the energy contributions of macronutrients, carbohydrates
+      and protein were counted as 4&nbsp;kcal/g, alcohol as 7&nbsp;kcal/g and
+      fat as 9&nbsp;kcal/g. Fiber was ignored. There were small discrepancies
+      between the total energy computed in this way and the total energy
+      given in the FDC data, so as a compromise the average between these two
+      values was used.
     </div>
   </div>
 </div>
