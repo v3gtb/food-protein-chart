@@ -51,7 +51,7 @@ jobs:
           python prepare_data.py
           python plot.py
           mkdir -p build
-          mv index.html plot.json build/
+          mv index.html plot.json googleb65bdbb60224bee0.html build/
       - name: Deploy to GitHub pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
