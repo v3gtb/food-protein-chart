@@ -5,9 +5,9 @@ env:
   SURVEY_FOODDATA_ZIP_FILENAME: 'FoodData_Central_survey_food_json_2021-10-28.zip'
   SURVEY_FOODDATA_JSON_FILENAME: 'FoodData_Central_survey_food_json_2021-10-28.json'
   FOODDATA_DIR: fooddata
-  VEGATTRIBUTES_ZIP_URL: 'https://github.com/v3gtb/fooddata-vegattributes/releases/download/v0.8.0/VegAttributes_for_FoodData_Central_survey_and_sr_legacy_food_json_2021-10-28-v0.8.0.zip'
-  VEGATTRIBUTES_ZIP_FILENAME: 'VegAttributes_for_FoodData_Central_survey_and_sr_legacy_food_json_2021-10-28-v0.8.0.zip'
-  VEGATTRIBUTES_JSON_FILENAME: 'VegAttributes_for_FoodData_Central_survey_and_sr_legacy_food_json_2021-10-28-v0.8.0.json'
+  VEGATTRIBUTES_ZIP_URL: 'https://github.com/v3gtb/fooddata-vegattributes/releases/download/v1.0.3/VegAttributes_for_FoodData_Central_survey_and_sr_legacy_food_json_2021-10-28-v1.0.3.zip'
+  VEGATTRIBUTES_ZIP_FILENAME: 'VegAttributes_for_FoodData_Central_survey_and_sr_legacy_food_json_2021-10-28-v1.0.3.zip'
+  VEGATTRIBUTES_JSON_FILENAME: 'VegAttributes_for_FoodData_Central_survey_and_sr_legacy_food_json_2021-10-28-v1.0.3.json'
 permissions:
   contents: write
 jobs:
