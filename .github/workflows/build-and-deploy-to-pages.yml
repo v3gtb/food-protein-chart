@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Upgrade pip and setuptools
+        run: pip install -U pip setuptools
       - name: Install project's Python package
         run: pip install -e .
       - name: Load USDA FDC FoodData and VegAttributes data from cache
